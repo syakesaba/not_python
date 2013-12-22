@@ -24,13 +24,15 @@ int main(int argc, char *argv[]){
     extern char * optarg;
     extern int optind, opterr;
 
-    int slice_bytes = DEFAULT_BYTES_TO_SPLIT_LINES;
+    unsigned long slice_bytes = DEFAULT_BYTES_TO_SPLIT_LINES;
     unsigned long start_bytes = 0;
     unsigned long end_bytes = 0;
     while ( (ch = getopt(argc,argv,"A:B:s:") ) != -1) {
     switch (ch) {
         case 's':
-            slice_bytes = atoi(optarg);
+            slice_bytes = atol(optarg);
+            if (slice_bytes == 0)
+                slice_bytes = DEFAULT_BYTES_TO_SPLIT_LINES;
             break;
         case 'A':
             start_bytes = (unsigned long)atol(optarg);
@@ -61,6 +63,7 @@ int main(int argc, char *argv[]){
     if (start_bytes > 0) {
         char buf[start_bytes];
         read(fd, buf, start_bytes);
+        end_bytes = end_bytes - start_bytes;
     }
     unsigned long i = 0;
     do {
@@ -92,7 +95,7 @@ int main(int argc, char *argv[]){
         }
         if (i % slice_bytes == 0)
             puts("");
-    } while (end_bytes - i != 0);
+    } while (end_bytes - i > 0);
     close(fd);
     puts("");
     return 0;
