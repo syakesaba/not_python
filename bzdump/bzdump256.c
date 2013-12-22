@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     while ( (ch = getopt(argc,argv,"A:B:s:") ) != -1) {
     switch (ch) {
         case 's':
-            slice_bytes = atol(optarg);
+            slice_bytes = (unsigned long)atol(optarg);
             if (slice_bytes == 0)
                 slice_bytes = DEFAULT_BYTES_TO_SPLIT_LINES;
             break;
