@@ -1,5 +1,3 @@
-//No License. Thank you.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,7 +8,6 @@
 #define DEFAULT_BYTES_TO_SPLIT_LINES 256;
 
 static char * prog;
-// /proc/$PID/cmdlineが書き換えられることは・・・？
 // strdupしなくてもよいのか・・・？
 
 void usage() {
@@ -82,8 +79,7 @@ int main(int argc, char *argv[]){
             else if (buf < 128)//RED
                 printf("\x1b[41m");
             else//BLACK
-                //printf("\x1b[40m");
-                printf("\x1b[48;5;16m");
+                printf("\x1b[48;5;16m")//printf("\x1b[40m")
             putchar(ch);
             printf("\x1b[0m");
             //fflush(stdout);
