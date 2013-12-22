@@ -39,7 +39,6 @@ int main(int argc, char *argv[]){
             end_bytes = (unsigned long)atol(optarg);
             break;
         case '?':
-            fprintf(stderr, "only -A -B -s is supported.\n", ch);
         default:
             usage();
             return -1;
@@ -52,23 +51,19 @@ int main(int argc, char *argv[]){
         return 1;
     }
     if (argv[0][0] == '-')
-        fd = 0;
+        fd = 0;//stdin
     else
         fd = open(argv[0], O_RDONLY);
     if ( fd < 0 ) {
-        fprintf(stderr, "Can't open file %s\n", argv[0]);
+        fprintf(stderr, "Can't read file %s\n", argv[0]);
         return 1;
     }
     if (start_bytes > 0) {
-        do {
-            char buf;
-            read(fd, &buf, 1);
-        } while(--start_bytes);
+        char buf[start_bytes];
+        read(fd, buf, start_bytes);
     }
     unsigned long i = 0;
     do {
-        if (i % slice_bytes == 0)
-            puts("");
         unsigned char buf;
         int read_size;
         read_size = read(fd, &buf, 1);
@@ -84,6 +79,7 @@ int main(int argc, char *argv[]){
             else if (buf < 128)//RED
                 printf("\x1b[41m");
             else//BLACK
+                //printf("\x1b[40m");
                 printf("\x1b[48;5;16m");
             putchar(ch);
             printf("\x1b[0m");
@@ -94,6 +90,8 @@ int main(int argc, char *argv[]){
             fprintf(stderr, "\nCan't continue reading file %s\n", argv[0]);
             return 1;
         }
+        if (i % slice_bytes == 0)
+            puts("");
     } while (end_bytes - i != 0);
     close(fd);
     puts("");
