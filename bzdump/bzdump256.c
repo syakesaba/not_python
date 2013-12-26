@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
             else if (buf < 128)//RED
                 printf("\x1b[41m");
             else//BLACK
-                printf("\x1b[48;5;16m")//printf("\x1b[40m")
+                printf("\x1b[48;5;16m");//printf("\x1b[40m")
             putchar(ch);
             printf("\x1b[0m");
             //fflush(stdout);
