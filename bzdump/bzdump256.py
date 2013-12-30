@@ -26,6 +26,8 @@ parser.add_argument("-S", "--split", metavar="N", type=int, default=1,
                     help="split each N Bytes. (default 1)")
 parser.add_argument("-v", "--verbose", action="count", default=0,
                     help="verbose mode (not implemented)")
+parser.add_argument("-c", "--char", action="store_true",
+                    help="print ascii char mode")
 parser.add_argument("-d", "--debug", action="store_true",
                     help="debug mode (opening Python interactive shell)")
 results = parser.parse_args()
@@ -50,7 +52,10 @@ for i,c in enumerate(target):
         p(S_RED)
     else:
         p(S_BLACK)
-    p(ch > 0x1F and ch < 0x7F and c or ".")
+    if results.char:
+        p(ch > 0x1F and ch < 0x7F and c or ".")
+    else:
+        p(" ")
     p(E_SEQ)
     if results.slice != 0 and (i + 1) % results.slice == 0:
         print
